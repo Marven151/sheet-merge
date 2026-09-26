@@ -1,0 +1,7 @@
+Order ID,Full Name,E-mail,Phone Number,Product,Qty,Price,Order Date
+A-1001,  Alice Johnson ,Alice.Johnson@example.com,555-0101,Wireless Mouse,2,19.99,03/04/2024
+A-1002,Bob Smith,BOB.SMITH@example.com , 555-0102,Keyboard,1,45.50,03/05/2024
+A-1003, Carla Diaz,carla.diaz@example.com,555-0103, USB Hub ,3,12.00,03/05/2024
+A-1002,Bob Smith,BOB.SMITH@example.com , 555-0102,Keyboard,1,45.50,03/05/2024
+,,,,,,,
+A-1004,Derek Young,derek.young@example.com,555-0104,Webcam,1,29.95,03/06/2024

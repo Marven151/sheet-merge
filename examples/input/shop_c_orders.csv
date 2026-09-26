@@ -1,0 +1,7 @@
+OrderID,Name,Email Address,Telephone,Product Name,Quantity,Price,Purchase Date
+C-3001,Isabel Costa,isabel.costa@example.com,555-0301,Notebook Set,5,9.99,"March 8, 2024"
+C-3002, Jack Nguyen ,JACK.NGUYEN@example.com,555-0302,Desk Organizer,1,18.40,"March 9, 2024"
+C-3003,Karen White,karen.white@example.com,555-0303,Pen Pack,10,6.50,"March 9, 2024"
+A-1004,Derek Young,derek.young@example.com,555-0104,Webcam,1,29.95,"March 6, 2024"
+   ,   ,,,,,,
+C-3004,Liam O'Brien,liam.obrien@example.com,555-0304,Sticky Notes,3,4.25,"March 11, 2024"
