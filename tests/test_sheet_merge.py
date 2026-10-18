@@ -90,3 +90,15 @@ def test_dedupe_on_subset():
     cleaned, removed = dedupe(df, subset=["email"])
     assert removed == 1
     assert list(cleaned["name"]) == ["A", "B"]
+
+
+def test_parse_date_dayfirst():
+    assert parse_date("05/03/2024") == "2024-05-03"
+    assert parse_date("05/03/2024", dayfirst=True) == "2024-03-05"
+    assert parse_date("2024-03-05", dayfirst=True) == "2024-03-05"
+
+
+def test_normalize_dates_per_file():
+    df = pd.DataFrame({"date": ["05/03/2024", "05/03/2024"], "source_file": ["a.csv", "b.csv"]})
+    out = normalize_dates(df, {"b.csv"})
+    assert list(out["date"]) == ["2024-05-03", "2024-03-05"]

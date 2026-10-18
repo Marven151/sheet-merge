@@ -47,7 +47,7 @@ pip install -r requirements.txt
 ## Usage
 
 ```
-python sheet_merge.py examples/input -o merged.xlsx --report
+python sheet_merge.py examples/input -o merged.xlsx --dayfirst shop_b_orders.xlsx --report
 ```
 
 This reads every `.csv` and `.xlsx` file in `examples/input/` (all sheets of
@@ -60,6 +60,8 @@ To dedupe on a specific column instead of the whole row:
 python sheet_merge.py examples/input -o merged.xlsx --dedupe-on email --report
 ```
 
+Dates like `05/03/2024` are ambiguous. By default they are read as month/day/year; files that write them day-first are listed after `--dayfirst`, as above (`shop_b_orders.xlsx` is day-first, the others are not).
+
 Output format is picked from the extension of `-o`: `.xlsx` or `.csv`.
 
 ## Options
@@ -69,6 +71,7 @@ Output format is picked from the extension of `-o`: `.xlsx` or `.csv`.
 | `input_folder`  | Folder containing `.csv`/`.xlsx` files to merge                     | (required)     |
 | `-o, --output`  | Output file path, `.xlsx` or `.csv`                                  | `merged.xlsx`  |
 | `--dedupe-on`   | Comma-separated column name(s) to dedupe on, keeping the first row  | all columns    |
+| `--dayfirst`    | File name(s) whose numeric dates are day/month/year                 | none           |
 | `--report`      | Add a `Summary` sheet and print row/dedupe/column stats to the terminal | off        |
 
 ## What it cleans up
@@ -83,8 +86,8 @@ Output format is picked from the extension of `-o`: `.xlsx` or `.csv`.
 - Drops rows that are completely empty.
 - Lowercases email addresses.
 - Normalizes date columns to ISO `YYYY-MM-DD`. Ambiguous numeric dates like
-  `03/04/2024` are read as month/day/year (US-style); see `DATE_FORMATS` in
-  `sheet_merge.py` if your data is day-first.
+  `03/04/2024` are read as month/day/year (US-style) unless the file is named
+  after `--dayfirst`.
 - Removes duplicate rows, keeping the first occurrence.
 
 ## Example

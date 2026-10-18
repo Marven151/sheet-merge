@@ -90,7 +90,10 @@ def lowercase_emails(df):
     return df
 
 
-def parse_date(value):
+DAYFIRST_FORMATS = ["%d/%m/%Y", "%d-%m-%Y", "%d.%m.%Y"]
+
+
+def parse_date(value, dayfirst=False):
     if pd.isna(value):
         return None
     if isinstance(value, (pd.Timestamp, datetime)):
@@ -98,22 +101,25 @@ def parse_date(value):
     text = str(value).strip()
     if not text:
         return None
-    for fmt in DATE_FORMATS:
+    formats = DATE_FORMATS[:2] + DAYFIRST_FORMATS + DATE_FORMATS[2:] if dayfirst else DATE_FORMATS
+    for fmt in formats:
         try:
             return datetime.strptime(text, fmt).date().isoformat()
         except ValueError:
             continue
-    parsed = pd.to_datetime(text, errors="coerce")
+    parsed = pd.to_datetime(text, errors="coerce", dayfirst=dayfirst)
     if pd.isna(parsed):
         return None
     return parsed.date().isoformat()
 
 
-def normalize_dates(df):
+def normalize_dates(df, dayfirst_files=()):
     df = df.copy()
     date_cols = [c for c in df.columns if c == "date" or c.endswith("_date")]
+    files = df["source_file"] if "source_file" in df.columns else [None] * len(df)
+    flags = [f in dayfirst_files for f in files]
     for col in date_cols:
-        df[col] = df[col].apply(parse_date)
+        df[col] = [parse_date(v, d) for v, d in zip(df[col], flags)]
     return df
 
 
@@ -222,6 +228,13 @@ def main():
         help="comma-separated column names to dedupe on (default: all columns)",
     )
     parser.add_argument(
+        "--dayfirst",
+        nargs="+",
+        default=[],
+        metavar="FILE",
+        help="files whose numeric dates are day/month/year (05/03/2024 = 5 March)",
+    )
+    parser.add_argument(
         "--report",
         action="store_true",
         help="add a Summary sheet to the output and print stats",
@@ -233,7 +246,7 @@ def main():
 
     merged, file_stats = read_folder(args.input_folder)
     merged = lowercase_emails(merged)
-    merged = normalize_dates(merged)
+    merged = normalize_dates(merged, set(args.dayfirst))
 
     subset = args.dedupe_on.split(",") if args.dedupe_on else None
     if subset:
