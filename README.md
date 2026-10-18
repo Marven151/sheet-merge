@@ -1,5 +1,7 @@
 # sheet-merge
 
+[![tests](https://github.com/Marven151/sheet-merge/actions/workflows/test.yml/badge.svg)](https://github.com/Marven151/sheet-merge/actions/workflows/test.yml)
+
 Small CLI that merges the messy CSV/Excel exports different systems spit out
 (different column names, inconsistent formatting, duplicate rows) into a
 single clean spreadsheet with an optional summary of what it did.
